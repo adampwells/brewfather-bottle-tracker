@@ -1,5 +1,5 @@
 <script setup>
-import * as wasm from "wasmtest";
+import * as wasm from "brewfather-bottle-tracker";
 
 function do_stuff() {
   let resp = wasm.store_bottle_ids(5.24, 2.2, [1,3,5,7,55])

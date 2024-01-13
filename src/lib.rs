@@ -46,10 +46,6 @@ impl Into<JsValue> for TooManyBottles {
 
 #[wasm_bindgen]
 pub fn store_bottle_ids(measured_ph: f64, fermenter_top_up: f64, bottle_ids: &[i32]) -> Result<StoreResponse, TooManyBottles> {
-    log("writing bottle ids");
-    log(&format!("original measured_ph: {}", measured_ph));
-    log(&format!("original fermenter_top_up: {}", fermenter_top_up));
-    log(&format!("bottle_ids to store: {:?}", bottle_ids));
     if bottle_ids.len() > 94 {
         return Err(TooManyBottles);
     }
@@ -59,14 +55,10 @@ pub fn store_bottle_ids(measured_ph: f64, fermenter_top_up: f64, bottle_ids: &[i
     }
 
     let one_to_fifty_two = bottle_ids.iter().filter(|&&id| id <= 52).map(|&id| id).collect::<Vec<i32>>();
-    log(&format!("one_to_fifty_two: {:?}", one_to_fifty_two));
     let fifty_three_to_ninety_four = bottle_ids.iter().filter(|&&id| id > 52).map(|&id| id - 52).collect::<Vec<i32>>();
-    log(&format!("fifty_three_to_ninety_four: {:?}", fifty_three_to_ninety_four));
 
     let measured_ph = store_array_64(&measured_ph, one_to_fifty_two, true);
-    log(&format!("new measured_ph: {}", measured_ph));
     let fermenter_top_up = store_array_64(&fermenter_top_up, fifty_three_to_ninety_four, false);
-    log(&format!("new fermenter_top_up: {}", fermenter_top_up));
 
     Ok(StoreResponse{
         measured_ph,
@@ -76,13 +68,8 @@ pub fn store_bottle_ids(measured_ph: f64, fermenter_top_up: f64, bottle_ids: &[i
 
 #[wasm_bindgen]
 pub fn read_bottle_ids(measured_ph: f64, fermenter_top_up: f64) -> Box<[JsValue]> {
-    log("reading bottle ids");
-    log(&format!("original measured_ph: {}", measured_ph));
-    log(&format!("original fermenter_top_up: {}", fermenter_top_up));
     let mut fifty_three_to_ninety_four = read_array_64(fermenter_top_up, false).iter().map(|&id| id + 52).collect::<Vec<i32>>();
-    log(&format!("fifty_three_to_ninety_four: {:?}", fifty_three_to_ninety_four));
     let mut one_to_fifty_two = read_array_64(measured_ph, true);
-    log(&format!("one_to_fifty_two: {:?}", one_to_fifty_two));
     one_to_fifty_two.append(&mut fifty_three_to_ninety_four);
     one_to_fifty_two.iter().map(|&id| JsValue::from(id)).collect::<Vec<JsValue>>().into_boxed_slice()
 }

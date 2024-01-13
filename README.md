@@ -28,26 +28,20 @@ rm -rf node_modules/.vite
 pnpm install
 ```
 
-## 🔋 Batteries Included
+## Why 94 bottles?
+The [Brewfather API](https://docs.brewfather.app/api#update-batch) only allows some fields on a batch to be edited, and those are numbers (or fixed strings).
 
-* [`wasm-bindgen`](https://github.com/rustwasm/wasm-bindgen) for communicating
-  between WebAssembly and JavaScript.
-* [`console_error_panic_hook`](https://github.com/rustwasm/console_error_panic_hook)
-  for logging panic messages to the developer console.
-* `LICENSE-APACHE` and `LICENSE-MIT`: most Rust projects are licensed this way, so these are included for you
+Those numbers are stored as 64 bit floats, and all but the `measuredMashPh` field are truncated at 6 decimal places.
 
-## License
+For `measuredMashPh` we can use the least significant 42 bits without materially changing the pH - eg if the tru measured pH is 5.4, we can encode bottle ids and store 5.451171875000118.
 
-Licensed under either of
+Each of the 42 bits represents a bottle id, so we can assign any or all of bottles 1 through 42 to a given batch.
 
-* Apache License, Version 2.0, ([LICENSE-APACHE](LICENSE-APACHE) or http://www.apache.org/licenses/LICENSE-2.0)
-* MIT license ([LICENSE-MIT](LICENSE-MIT) or http://opensource.org/licenses/MIT)
+We use `fermenterTopUp` and completely re-write that to a really big number with only a couple of decimal places (to avoid getting trucnated), and that gives us access to 52 bits to mess with. This means that the `fermenterTopUp` value will now read some ridiculously large number that is meaningless in terms of brewing, so you will just have to ignore it. 
 
-at your option.
+Since 42 + 52 = 94, that is the limit on how many bottle we can manage. If there are requests for more, I can perhaps add another field to completely nuke and bump up the capacity by another 52.
 
-### Contribution
+## Why Rust / wasm?
+I wanted this app to be completely self-contained and require no back end server. JavaScript usues 64 bit floats for all of its numbers (yay!), but [bitwise operators in the language are in 32 bits](https://www.w3schools.com/js/js_bitwise.asp) (boo!).
 
-Unless you explicitly state otherwise, any contribution intentionally
-submitted for inclusion in the work by you, as defined in the Apache-2.0
-license, shall be dual licensed as above, without any additional terms or
-conditions.
+Rust has excellent support for bitwise operations on 64 bit numbers, and targets wasm easily, so the bitwise stuff happens in wasm.
