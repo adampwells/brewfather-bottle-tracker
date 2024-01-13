@@ -1,62 +1,31 @@
 <div align="center">
 
-  <h1><code>wasm-pack-template</code></h1>
+  <h1><code>brewfather-bottle-tracker</code></h1>
 
-  <strong>A template for kick starting a Rust and WebAssembly project using <a href="https://github.com/rustwasm/wasm-pack">wasm-pack</a>.</strong>
-
-  <p>
-    <a href="https://travis-ci.org/rustwasm/wasm-pack-template"><img src="https://img.shields.io/travis/rustwasm/wasm-pack-template.svg?style=flat-square" alt="Build Status" /></a>
-  </p>
-
-  <h3>
-    <a href="https://rustwasm.github.io/docs/wasm-pack/tutorials/npm-browser-packages/index.html">Tutorial</a>
-    <span> | </span>
-    <a href="https://discordapp.com/channels/442252698964721669/443151097398296587">Chat</a>
-  </h3>
-
-  <sub>Built with 🦀🕸 by <a href="https://rustwasm.github.io/">The Rust and WebAssembly Working Group</a></sub>
+This project is based on the [wasm-pack-template](https://github.com/rustwasm/wasm-pack-template)
+[**📚 Read the template tutorial! 📚**][template-docs]
 </div>
 
+I followed this [tutorial that combines wasm and Vue](https://blog.stackademic.com/webassembly-simplified-a-beginners-guide-to-creating-your-first-wasm-project-with-rust-458091fdde57).
+
 ## About
+This project is a combination of a wasm library that 'hides' bottle ids inside the numbers we are allowed to edit in each Brewfather batch, and a basic Vue single page web app plus some local storage.
 
-[**📚 Read this template tutorial! 📚**][template-docs]
+The function of the app is to associate QR coded bottle ids with a given batch, so tou can scan the bottle in your phone and get a description of the beer inside.
 
-This template is designed for compiling Rust libraries into WebAssembly and
-publishing the resulting package to NPM.
+When you are re-using your bottles, just scan the bottle and associate it with a different batch!
 
-Be sure to check out [other `wasm-pack` tutorials online][tutorials] for other
-templates and usages of `wasm-pack`.
+You will need to create a Brewfather API key and enter it into the app. We don't record the credentials and they stay on your browser only.
 
-[tutorials]: https://rustwasm.github.io/docs/wasm-pack/tutorials/index.html
-[template-docs]: https://rustwasm.github.io/docs/wasm-pack/tutorials/npm-browser-packages/index.html
-
-## 🚴 Usage
-
-### 🐑 Use `cargo generate` to Clone this Template
-
-[Learn more about `cargo generate` here.](https://github.com/ashleygwilliams/cargo-generate)
-
-```
-cargo generate --git https://github.com/rustwasm/wasm-pack-template.git --name my-project
-cd my-project
-```
-
-### 🛠️ Build with `wasm-pack build`
-
+## 🛠️ Build
+The build command creates the wasm library and copies it to the web app.
 ```
 wasm-pack build
 ```
-
-### 🔬 Test in Headless Browsers with `wasm-pack test`
-
+You need to clean out the vite cache after building the wasm library, otherwise the web app will not see the changes.
 ```
-wasm-pack test --headless --firefox
-```
-
-### 🎁 Publish to NPM with `wasm-pack publish`
-
-```
-wasm-pack publish
+rm -rf node_modules/.vite
+pnpm install
 ```
 
 ## 🔋 Batteries Included
