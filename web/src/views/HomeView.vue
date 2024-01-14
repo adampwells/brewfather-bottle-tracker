@@ -1,9 +1,13 @@
 <script setup>
-import TheWelcome from '../components/TheWelcome.vue'
+import {QrcodeStream} from "vue-qrcode-reader";
+
+function onDetect(content) {
+  console.log(content)
+}
 </script>
 
 <template>
-  <main>
-    <TheWelcome />
-  </main>
+  <div class="container-sm" style="max-width: 300px">
+    <qrcode-stream @detect="onDetect"></qrcode-stream>
+  </div>
 </template>

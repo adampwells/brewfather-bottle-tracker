@@ -81,7 +81,7 @@ fn store_array_64(db: &f64, bottle_ids: Vec<i32>, steganographic: bool) -> f64 {
     let mask_least_significant_bits = if steganographic {
         0b_11111111_11111111_11111100_00000000_00000000_00000000_00000000_00000000_u64
     } else {
-        db = 105553116266498.08_f64.to_bits(); // need to make this a 'safe' value with at most 6 decimal digits, otherwise BrewFather will truncate it
+        db = 105553116266498.08_f64.to_bits(); // need to make this a 'safe' value with at most 6 decimal digits, otherwise Brewfather will truncate it
         0b_11111111_11110000_00000000_00000000_00000000_00000000_00000000_00000000_u64
     };
     db &= mask_least_significant_bits;

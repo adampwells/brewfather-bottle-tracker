@@ -1,26 +1,31 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+import {RouterLink, RouterView} from 'vue-router'
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.png" width="125" height="125" />
+  <div class="container-md">
 
-    <div class="wrapper">
-      <nav>
-        <RouterLink to="/"><span class="material-icons">sports_bar</span></RouterLink>
-        <RouterLink to="/settings"><span class="material-icons">settings</span></RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView />
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+          <img src="@/assets/logo.png" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
+        </a>
+        <div class="navbar-nav">
+          <div class="container-fluid">
+            <RouterLink to="/"><span class="material-icons">sports_bar</span></RouterLink>
+            <RouterLink to="/settings"><span class="material-icons">settings</span></RouterLink>
+            <RouterLink to="/instructions"><span class="material-icons">description</span></RouterLink>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>
+  <RouterView/>
 </template>
 
 <style scoped>
 header {
-  line-height: 1.5;
+  line-height: 1;
   max-height: 100vh;
 }
 
@@ -31,7 +36,7 @@ header {
 
 nav {
   width: 100%;
-  font-size: 12px;
+  font-size: 10px;
   text-align: center;
   margin-top: 2rem;
 }
